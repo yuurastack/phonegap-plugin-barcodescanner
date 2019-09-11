@@ -20,10 +20,16 @@
     </config-file>
     <resource-file src="src/ios/scannerOverlay.xib"/>
     <resource-file src="src/ios/CDVBarcodeScanner.bundle"/>
+    <resource-file src="src/ios/Button-Switch.png"/>
     <source-file src="src/ios/CDVBarcodeScanner.mm"/>
     <!-- frameworks -->
     <framework src="AVFoundation.framework" />
     <framework src="AudioToolbox.framework" />
+    <!-- Usage description of Face ID for iOS 11+ -->
+    <preference name="CAMERA_USAGE_DESCRIPTION" default="Enable your camera to scan barcodes"/>
+    <edit-config target="NSCameraUsageDescription" file="*-Info.plist" mode="merge">
+        <string>$CAMERA_USAGE_DESCRIPTION</string>
+    </edit-config>
   </platform>
   <platform name="android">
     <source-file src="src/android/com/phonegap/plugins/barcodescanner/BarcodeScanner.java" target-dir="src/com/phonegap/plugins/barcodescanner"/>

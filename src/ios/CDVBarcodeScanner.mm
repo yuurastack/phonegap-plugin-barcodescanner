@@ -783,7 +783,6 @@ parentViewController:(UIViewController*)parentViewController
     }
 
     [self.view.layer insertSublayer:previewLayer below:[[self.view.layer sublayers] objectAtIndex:0]];
-
     [self.view addSubview:[self buildOverlayView]];
     [self startCapturing];
 
@@ -862,7 +861,6 @@ parentViewController:(UIViewController*)parentViewController
     }
     CGRect bounds = self.view.frame;
     bounds = CGRectMake(0, 0, bounds.size.width, bounds.size.height);
-
     UIView* overlayView = [[UIView alloc] initWithFrame:bounds];
     overlayView.autoresizesSubviews = YES;
     overlayView.autoresizingMask    = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
@@ -870,13 +868,26 @@ parentViewController:(UIViewController*)parentViewController
 
     self.toolbar = [[UIToolbar alloc] init];
     self.toolbar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-
+    overlayView.layoutMargins =UIEdgeInsetsMake(0.0, 20.0, 0.0, 20.0);
+    
+    CGRect frame = CGRectMake(0,50,bounds.size.width,40);
+    UILabel *label = [[UILabel alloc] initWithFrame:frame];
+    label.text = @"Acerca el código de barras al lector";
+    label.backgroundColor = [UIColor clearColor];
+    label.textColor = [UIColor whiteColor];
+    label.textAlignment = NSTextAlignmentCenter;
+    [self.view addSubview:label];
+    
+    UIButton *favButton = [[UIButton alloc] init];
+    
+    [favButton setImage:[UIImage imageNamed:@"Button-Switch.png"] forState:UIControlStateNormal];
+    [favButton addTarget:self action:@selector(cancelButtonPressed:)
+        forControlEvents:UIControlEventTouchUpInside];
+    favButton.imageEdgeInsets = UIEdgeInsetsMake(15, 30, 15, 30);
+    favButton.imageView.contentMode = UIViewContentModeScaleAspectFit;
     id cancelButton = [[UIBarButtonItem alloc]
-                       initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
-                       target:(id)self
-                       action:@selector(cancelButtonPressed:)
+                                     initWithCustomView: favButton
                        ];
-
 
     id flexSpace = [[UIBarButtonItem alloc]
                     initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
@@ -932,11 +943,12 @@ parentViewController:(UIViewController*)parentViewController
   }
     self.toolbar.items = items;
     [overlayView addSubview: self.toolbar];
-
+    
     UIImage* reticleImage = [self buildReticleImage];
+    
     self.reticleView = [[UIImageView alloc] initWithImage:reticleImage];
 
-    self.reticleView.opaque           = NO;
+    self.reticleView.opaque           = YES;
     self.reticleView.contentMode      = UIViewContentModeScaleAspectFit;
     self.reticleView.autoresizingMask = (UIViewAutoresizing) (0
         | UIViewAutoresizingFlexibleLeftMargin
@@ -952,10 +964,10 @@ parentViewController:(UIViewController*)parentViewController
 
 //--------------------------------------------------------------------------
 
-#define RETICLE_SIZE    500.0f
-#define RETICLE_WIDTH    10.0f
+#define RETICLE_SIZE    300.0f
+#define RETICLE_WIDTH    5.0f
 #define RETICLE_OFFSET   60.0f
-#define RETICLE_ALPHA     0.4f
+#define RETICLE_ALPHA     0.3f
 
 //-------------------------------------------------------------------------
 // builds the green box and red line
@@ -966,7 +978,7 @@ parentViewController:(UIViewController*)parentViewController
     CGContextRef context = UIGraphicsGetCurrentContext();
 
     if (self.processor.is1D) {
-        UIColor* color = [UIColor colorWithRed:1.0 green:0.0 blue:0.0 alpha:RETICLE_ALPHA];
+        UIColor* color = [UIColor colorWithRed:1.0 green:0 blue:0 alpha:0.2];
         CGContextSetStrokeColorWithColor(context, color.CGColor);
         CGContextSetLineWidth(context, RETICLE_WIDTH);
         CGContextBeginPath(context);
@@ -974,10 +986,11 @@ parentViewController:(UIViewController*)parentViewController
         CGContextMoveToPoint(context, lineOffset, RETICLE_SIZE/2);
         CGContextAddLineToPoint(context, RETICLE_SIZE-lineOffset, (CGFloat) (0.5*RETICLE_SIZE));
         CGContextStrokePath(context);
+        
     }
 
     if (self.processor.is2D) {
-        UIColor* color = [UIColor colorWithRed:0.0 green:1.0 blue:0.0 alpha:RETICLE_ALPHA];
+        UIColor* color = [UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:0.2];
         CGContextSetStrokeColorWithColor(context, color.CGColor);
         CGContextSetLineWidth(context, RETICLE_WIDTH);
         CGContextStrokeRect(context,
@@ -1050,7 +1063,7 @@ parentViewController:(UIViewController*)parentViewController
     }
 
     [self.toolbar sizeToFit];
-    CGFloat toolbarHeight  = [self.toolbar frame].size.height;
+    CGFloat toolbarHeight  = 80;
     CGFloat rootViewHeight = CGRectGetHeight(bounds);
     CGFloat rootViewWidth  = CGRectGetWidth(bounds);
     CGRect  rectArea       = CGRectMake(0, rootViewHeight - toolbarHeight, rootViewWidth, toolbarHeight);
