@@ -1,7 +1,10 @@
 # Change Log
 
+## v8.3.0
+- Fixed the interactive dismissal in iOS 13.
+
 ## v8.2.0
-- Added custom layouts on ios and android
+- Added custom layouts on ios and android.
 
 ## v8.1.0
 
