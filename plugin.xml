@@ -27,7 +27,7 @@
     <framework src="AudioToolbox.framework" />
     <!-- Usage description of Face ID for iOS 11+ -->
     <preference name="CAMERA_USAGE_DESCRIPTION" default="Enable your camera to scan barcodes"/>
-    <edit-config target="NSCameraUsageDescription" file="*-Info.plist" mode="merge">
+    <edit-config target="NSCameraUsageDescription" file="*-Info.plist" mode="overwrite">
         <string>$CAMERA_USAGE_DESCRIPTION</string>
     </edit-config>
   </platform>
