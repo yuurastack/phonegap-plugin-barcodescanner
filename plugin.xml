@@ -28,13 +28,9 @@
     <!-- Usage description of Face ID for iOS 11+ -->
     <preference name="CAMERA_USAGE_DESCRIPTION" default="Enable your camera to scan barcodes"/>
     <config-file target="*-Info.plist" parent="NSCameraUsageDescription">
-    <array>
-        <dict>
-            <key>NSCameraUsageDescription</key>
-            <string>$CAMERA_USAGE_DESCRIPTION</string>
-        </dict>
-    </array>
-</config-file>
+      <key>NSCameraUsageDescription</key>
+      <string>$CAMERA_USAGE_DESCRIPTION</string>
+    </config-file>
   </platform>
   <platform name="android">
     <source-file src="src/android/com/phonegap/plugins/barcodescanner/BarcodeScanner.java" target-dir="src/com/phonegap/plugins/barcodescanner"/>
